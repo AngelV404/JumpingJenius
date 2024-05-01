@@ -5,6 +5,7 @@ from .piece import Piece
 class Board:
     def __init__(self):
         self.board = []
+        #how many pieces are left W and R
         self.red_left = self.white_left = 12
         self.red_kings = self.white_kings = 0
         self.create_board()
@@ -15,6 +16,20 @@ class Board:
             for col in range(row % 2, COLS, 2):
                 pygame.draw.rect(win, RED, (row*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
+    #checks state of board 
+    def evaluate(self):
+        return self.white_left - self.red_left + (self.white_kings * 0.5 - self.red_kings * 0.5)
+    
+    #return state of all pieces of a certain color
+    def get_all_pieces(self,color):
+        pieces = []
+        for row in self.board:
+            for piece in row:
+                if piece != 0 and piece.color == color:
+                    pieces.append(piece)
+        return pieces
+
+    #moves certain piece 
     def move(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
@@ -26,6 +41,7 @@ class Board:
             else:
                 self.red_kings += 1 
 
+    #gives piece at row and col
     def get_piece(self, row, col):
         return self.board[row][col]
 
@@ -51,6 +67,7 @@ class Board:
                 if piece != 0:
                     piece.draw(win)
 
+    #removes piece
     def remove(self, pieces):
         for piece in pieces:
             self.board[piece.row][piece.col] = 0
@@ -68,6 +85,7 @@ class Board:
         
         return None 
     
+    #shows possible moves for piece
     def get_valid_moves(self, piece):
         moves = {}
         left = piece.col - 1
