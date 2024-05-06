@@ -9,7 +9,7 @@ pygame.init()
 FPS = 60
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Checkers')
+pygame.display.set_caption('Jumping Jenius')
 
 def get_row_col_from_mouse(pos):
     x, y = pos
